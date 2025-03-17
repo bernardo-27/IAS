@@ -7,7 +7,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/unicons/4.0.0/css/unicons.min.css">
-		<link rel="stylesheet" href="style.css">
+		<link rel="stylesheet" href="style1.css">
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
 		<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
@@ -35,91 +35,114 @@
 	</style>
 </head>
 <body>
-	<div class="section">
-		<div class="container">
-			<div class="row full-height justify-content-center">
-				<div class="col-12 align-self-center ">
-					<div class="section pb-5 pt-5 pt-sm-2 ">
-                        <h1 id="kabataan" class="text-center font-weight-bold font-italic">SANGGUNIANG KABATAAN MANAGEMENT SYSTEM</h1>
+    <div class="section">
+        <div class="container">
+            <div class="row full-height justify-content-center">
+                <div class="col-12 align-self-center ">
+                    <div class="section pb-5 pt-5 pt-sm-2 ">
+                        <h1 id="kabataan" class="text-center font-weight-bold font-italic">
+                            SANGGUNIANG KABATAAN MANAGEMENT SYSTEM
+                        </h1>
 
-						<h6 class="title text-center">
-							<span>Log In</span>
-							<span>Sign Up</span>
-						</h6>
+                        <h6 class="title text-center">
+                            <span>Log In</span>
+                            <span>Sign Up</span>
+                        </h6>
 
-						<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
-						<label for="reg-log"></label>
-						
-						<div class="card-3d-wrap mx-auto">
-							<div class="card-3d-wrapper">
-								<div class="card-front">
-									<div class="center-wrap">
-										<div class="section">
-											<h4 class="mb-4 pb-3 text-center">
-												<img src="sk1.png" alt="Logo" class="logo"> Log In
-											</h4>
-											<form action="login.php" method="POST">
-												<div class="form-group">
-													<label for="email" class="form-label">Email:</label>
-													<input type="email" name="email" class="form-style" placeholder="Email" required>
-													<i class="input-icon uil uil-at"></i>
-												</div>	
+                        <input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
+                        <label for="reg-log"></label>
+
+                        <div class="card-3d-wrap mx-auto">
+                            <div class="card-3d-wrapper">
+                                <div class="card-front">
+                                    <div class="center-wrap">
+                                        <div class="section">
+                                            <h4 class="mb-4 pb-3 text-center">
+                                                <img src="sk1.png" alt="Logo" class="logo"> Log In
+                                            </h4>
+                                            <form action="login.php" method="POST">
+                                                <div class="form-group">
+                                                    <label for="email" class="form-label">Email:</label>
+                                                    <i class="input-icon uil uil-at"></i>
+                                                    <input type="email" name="email" class="form-style" placeholder="Email" required>
+                                                </div>  
+                                                <div class="form-group mt-2">
+                                                    <label for="password">Password:</label>
+                                                    <div class="input-group">
+                                                        <i class="input-icon uil uil-lock"></i>
+                                                        <input type="password" id="login-password" name="password" class="form-style" placeholder="Password" required>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" onclick="togglePassword('login-password', 'eye-icon-login')">
+                                                                <i id="eye-icon-login" class="uil uil-eye"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn mt-4 ">Login</button>
+                                            </form>
+                                            <p class="mb-0 mt-4 text-center">
+                                                <a href="#" class="link">Forgot your password?</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-back">
+                                    <div class="center-wrap">
+                                        <div class="section">
+                                            <h4 class="mb-3 pb-3 text-center">
+                                                <img src="sk1.png" alt="Logo" class="logo"> Sign Up
+                                            </h4>
+                                            <form action="signup.php" method="POST">
+                                                <div class="form-group">
+                                                    <label for="name">Full Name:</label>
+                                                    <i class="input-icon uil uil-user"></i>
+                                                    <input type="text" name="full_name" class="form-style" placeholder="Full Name" required>
+                                                </div> 
+                                                <div class="form-group mt-2">
+                                                    <label for="phone">Phone Number:</label>
+                                                    <i class="input-icon uil uil-phone"></i>
+                                                    <input type="tel" name="phone" class="form-style" placeholder="Phone Number" required>
+                                                </div> 
+                                                <div class="form-group mt-2">
+                                                    <label for="email">Email:</label>
+                                                    <i class="input-icon uil uil-at"></i>
+                                                    <input type="email" name="email" class="form-style" placeholder="Email" required>
+                                                </div>
+                                                <div class="form-group mt-2">
+                                                    <label for="password">Password:</label>
+                                                    <div class="input-group">
+                                                        <i class="input-icon uil uil-lock"></i>
+                                                        <input type="password" id="signup-password" name="password" class="form-style" placeholder="Password" required>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" onclick="togglePassword('signup-password', 'eye-icon-signup')">
+                                                                <i id="eye-icon-signup" class="uil uil-eye"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
 												<div class="form-group mt-2">
-													<label for="password">Password:</label>
-													<input type="password" name="password" class="form-style" placeholder="Password" required>
-													<i class="input-icon uil uil-lock-alt"></i>
+													<label for="confirm_password">Confirm Password:</label>
+													<div class="input-group">
+														<i class="input-icon uil uil-lock"></i>
+														<input type="password" id="confirm-password" name="confirm_password" class="form-style" placeholder="Confirm Password" required>
+														<div class="input-group-append">
+														</div>
+													</div>
 												</div>
-												<button type="submit" class="btn mt-4 ">Login</button>
-											</form>
-											<p class="mb-0 mt-4 text-center">
-												<a href="forgot_password.php" class="link">Forgot your password?</a>
-											</p>
-										</div>
-									</div>
-								</div>
+                                                <button type="submit" class="btn mt-4 center">Register</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
 
-								
-								<div class="card-back">
-									<div class="center-wrap">
-										<div class="section">
-											<h4 class="mb-3 pb-3 text-center">
-												<img src="sk1.png" alt="Logo" class="logo"> Sign Up
-											</h4>
-											<form action="signup.php" method="POST">
-												<div class="form-group">
-													<label for="name">Full Name:</label>
-													<input type="text" name="full_name" class="form-style" placeholder="Full Name" required>
-													<i class="input-icon uil uil-user"></i>
-												</div> 
-												<div class="form-group mt-2">
-													<label for="phone">Phone Number:</label>
-													<input type="tel" name="phone" class="form-style" placeholder="Phone Number" required>
-													<i class="input-icon uil uil-phone"></i>
-												</div> 
-												<div class="form-group mt-2">
-													<label for="email">Email:</label>
-													<input type="email" name="email" class="form-style" placeholder="Email" required>
-													<i class="input-icon uil uil-at"></i>
-												</div>
-												<div class="form-group mt-2">
-													<label for="password">Password:</label>
-													<input type="password" name="password" class="form-style" placeholder="Password" required>
-													<i class="input-icon uil uil-lock-alt"></i>
-												</div>
-												<button type="submit" class="btn mt-4 center">Register</button>
-											</form>
-
-										</div>
-									</div>
-								</div>
-
-							</div> 
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 	
 
 	<div class="alert-container">
@@ -151,33 +174,145 @@
 				$('#signupAlert').html("Email already in use!").fadeIn(500).delay(1000).fadeOut(500);
 			} else if (alertType === 'login_error') {
 				$('#loginAlert').fadeIn(500).delay(1000).fadeOut(500);
-			}	
+			}else if (alertType === 'full_name_in_use') {
+				$('#signupAlert').html("This full name is already in use! Please choose a different name.")
+					.fadeIn(500).delay(3000).fadeOut(500);
+			}else if (alertType === 'password_complexity_error') {
+				$('#signupAlert').html("Password must contain at least one letter, one number, and be at least 8 characters long.")
+					.fadeIn(500).delay(3000).fadeOut(500);
+			}
 			
 			
 		if (window.location.search.includes("alert=password_error")) {
         alert("Password must be at least 8 characters and contain only letters and numbers.");
 	}
-    if (alertType === 'password_update_success') {
-        setTimeout(function () { // Delay for 1 second before showing
-            const alertBox = $(`
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Password updated successfully! You can now log in with your new password.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            `);
-
-            $('body').prepend(alertBox);
-
-            setTimeout(function () {
-                alertBox.fadeOut(500);
-            }, 5000);
-        }, 300);
-    }
 });
-		
+	
 
+	$(document).ready(function () {
+		$("form").submit(function (event) {
+			event.preventDefault(); // Prevent default form submission
+	
+			let form = $(this);
+			let url = form.attr("action"); // Get the form's action (login.php or signup.php)
+	
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: form.serialize(),
+				dataType: "json",
+				success: function (response) {
+					if (response.status === "success") {
+						// Success handling
+						if (url === "login.php") {
+							$("#loginSuccessAlert").text(response.message).show();
+							setTimeout(function() {
+								window.location.href = "dashboard.php"; // Redirect to dashboard after login
+							}, 1000);
+						} else {
+							$("#signupSuccessAlert").text(response.message).show();
+							setTimeout(function() {
+								location.reload(); // Refresh after successful signup
+							}, 1500);
+						}
+					} else {
+						// Error handling
+						if (url === "login.php") {
+							// Check if it's a blocking message
+							if (response.message.includes("Too many failed attempts")) {
+								// Create a special alert for blocked accounts
+								$("#loginAlert").html('<strong>Account Temporarily Blocked:</strong> ' + response.message)
+									.removeClass('alert-danger')
+									.addClass('alert-warning')
+									.show();
+									
+								// If there's a countdown timer needed
+								if (response.message.includes("Please try again in")) {
+									startBlockCountdown(response.message);
+								}
+							} else {
+								// Regular login error
+								$("#loginAlert").text(response.message)
+									.removeClass('alert-warning')
+									.addClass('alert-danger')
+									.show();
+							}
+						} else {
+							// Signup error
+							$("#signupAlert").text(response.message).show();
+						}
+						
+						// Hide the alert after 5 seconds
+						setTimeout(function() {
+							$(".alert").fadeOut();
+						}, 5000);
+					}
+				},
+				error: function () {
+					alert("Something went wrong. Please try again.");
+				}
+			});
+		});
+		
+		// Close alerts when the user clicks on them
+		$(".alert").click(function() {
+			$(this).hide();
+		});
+
+	
+	// Function to start countdown for blocked accounts
+	function startBlockCountdown(message) {
+		// Extract the remaining minutes from the message
+		const minutesMatch = message.match(/(\d+) minute\(s\)/);
+		if (!minutesMatch) return;
+		
+		let remainingSeconds = parseInt(minutesMatch[1]) * 60;
+		const loginBtn = $('form[action="login.php"] button[type="submit"]');
+		const originalBtnText = loginBtn.text();
+		
+		// Disable the login button
+		loginBtn.prop('disabled', true);
+		
+		// Update the countdown every second
+		const countdownInterval = setInterval(function() {
+			remainingSeconds--;
+			
+			if (remainingSeconds <= 0) {
+				// Re-enable login when countdown completes
+				clearInterval(countdownInterval);
+				loginBtn.prop('disabled', false).text(originalBtnText);
+				$("#loginAlert").fadeOut();
+			} else {
+				// Calculate minutes and seconds for display
+				const minutes = Math.floor(remainingSeconds / 60);
+				const seconds = remainingSeconds % 60;
+				
+				// Update the button text with countdown
+				loginBtn.text(`Try again in ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+				
+				// Update the alert message
+				$("#loginAlert").html('<strong>Account Temporarily Blocked:</strong> ' + 
+					`Too many failed attempts. Please try again in ${minutes} minute(s) and ${seconds} second(s).`);
+			}
+		}, 1000);
+	}
+	});
+
+	
+	function togglePassword(inputId, iconId) {
+		var passwordInput = document.getElementById(inputId);
+		var icon = document.getElementById(iconId);
+	
+		if (passwordInput.type === "password") {
+			passwordInput.type = "text";
+			icon.classList.remove("uil-eye");
+			icon.classList.add("uil-eye-slash");
+		} else {
+			passwordInput.type = "password";
+			icon.classList.remove("uil-eye-slash");
+			icon.classList.add("uil-eye");
+		}
+	}
 
 
 		

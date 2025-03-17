@@ -12,7 +12,7 @@ body{
     color: #000000;
 }
 .title {
-  margin: 50px 0 0 0;
+  margin: 10px 0 0 0;
 }
 .logo {
     height: 40px; /* Adjust logo size */
@@ -99,7 +99,7 @@ display: none;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   perspective: 800px;
-  margin-top: 65px;
+  margin-top: 180px;
 }
 .card-3d-wrapper {
   width: 100%;
@@ -112,7 +112,7 @@ display: none;
 .card-front, .card-back {
   bottom: 1px;
   width: 100%;
-  height: 113%;
+  height: 140%;
   background-color: #2b2e38;
   position: absolute;
   border-radius: 6px;
@@ -199,4 +199,47 @@ display: none;
   background-color: #000000;
   color: #ffeba7;
   box-shadow: 0 8px 24px 0 rgba(16,39,112,.2);
+}
+
+.alert-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1050;
+  width: 300px;
+}
+
+/* Align icons inside input fields */
+.form-group {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-15%);
+  font-size: 18px;
+  color: gray;
+}
+.uil-lock {
+transform: translateY(-50%);
+}
+.input-group-append {
+position: absolute;
+top: 8%;
+left: 90%;
+}
+
+.form-style {
+  padding-left: 35px; /* Space for icons */
+  width: 100%;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.input-group-text {
+  cursor: pointer;
 }

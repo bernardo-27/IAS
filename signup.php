@@ -1,51 +1,50 @@
 <?php
-require 'db.php'; // Include database connection
+require_once 'db.php';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+// Retrieve form data
 $full_name = $_POST['full_name'];
-$phone = $_POST['phone'];
 $email = $_POST['email'];
+$phone = $_POST['phone'];
 $password = $_POST['password'];
+$confirm_password = $_POST['confirm_password'];
 
-// Validate password: Minimum 8 characters, letters, and numbers only
-if (strlen($password) < 8 || !preg_match('/^[a-zA-Z0-9]*$/', $password)) {
-    header("Location: index.html?alert=password_error");
-    exit;
-}
+// Validate unique email and full name
+$stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email OR full_name = :full_name");
+$stmt->execute(['email' => $email, 'full_name' => $full_name]);
+$existing_user = $stmt->fetch();
 
-$password = password_hash($password, PASSWORD_BCRYPT);
-
-// Check if email already exists
-$sql = "SELECT * FROM users WHERE email = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $email);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    header("Location: index.html?alert=email_in_use");
-    exit;
-}
-
-$sql = "INSERT INTO users (full_name, phone, email, password) VALUES (?, ?, ?, ?)";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ssss", $full_name, $phone, $email, $password);
-
-if ($stmt->execute()) {
-    header("Location: index.html?alert=signup_success");
-    exit;
-} else {
-    if ($conn->errno === 1062) { // Duplicate entry error code
+if ($existing_user) {
+    if ($existing_user['email'] === $email) {
         header("Location: index.html?alert=email_in_use");
-    } else {
-        header("Location: index.html?alert=signup_error");
+        exit;
+    } elseif ($existing_user['full_name'] === $full_name) {
+        header("Location: index.html?alert=full_name_in_use");
+        exit;
     }
+}
+
+// Validate password match
+if ($password !== $confirm_password) {
+    header("Location: index.html?alert=password_mismatch");
     exit;
 }
 
-$stmt->close();
-$conn->close();
+// Validate password complexity (at least 8 characters, containing letters and numbers)
+if (!preg_match('/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $password)) {
+    header("Location: index.html?alert=password_complexity_error");
+    exit;
+}
+
+// Hash the password and insert into the database
+$hashed_password = password_hash($password, PASSWORD_BCRYPT);
+$stmt = $pdo->prepare("INSERT INTO users (full_name, email, phone, password) VALUES (:full_name, :email, :phone, :password)");
+$stmt->execute([
+    'full_name' => $full_name,
+    'email' => $email,
+    'phone' => $phone,
+    'password' => $hashed_password
+]);
+
+header("Location: index.html?alert=signup_success");
+exit;
 ?>

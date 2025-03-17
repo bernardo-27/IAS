@@ -1,15 +1,13 @@
 <?php
-// Database configuration
-$db_host = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "sk_management";
+$host = 'localhost';
+$dbname = 'sk_management';
+$username = 'root';
+$password = '';
 
-// Create connection
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
 }
 ?>
