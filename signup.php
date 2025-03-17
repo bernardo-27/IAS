@@ -15,36 +15,38 @@ $existing_user = $stmt->fetch();
 
 if ($existing_user) {
     if ($existing_user['email'] === $email) {
-        header("Location: index.html?alert=email_in_use");
+        echo json_encode(["status" => "error", "message" => "Email already in use!"]);
         exit;
     } elseif ($existing_user['full_name'] === $full_name) {
-        header("Location: index.html?alert=full_name_in_use");
+        echo json_encode(["status" => "error", "message" => "This full name is already in use! Please choose a different name."]);
         exit;
     }
 }
 
 // Validate password match
 if ($password !== $confirm_password) {
-    header("Location: index.html?alert=password_mismatch");
+    echo json_encode(["status" => "error", "message" => "Passwords do not match! Please try again."]);
     exit;
 }
 
 // Validate password complexity (at least 8 characters, containing letters and numbers)
 if (!preg_match('/^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $password)) {
-    header("Location: index.html?alert=password_complexity_error");
+    echo json_encode(["status" => "error", "message" => "Password must contain at least one letter, one number, and be at least 8 characters long."]);
     exit;
 }
 
 // Hash the password and insert into the database
 $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 $stmt = $pdo->prepare("INSERT INTO users (full_name, email, phone, password) VALUES (:full_name, :email, :phone, :password)");
-$stmt->execute([
-    'full_name' => $full_name,
-    'email' => $email,
-    'phone' => $phone,
-    'password' => $hashed_password
-]);
-
-header("Location: index.html?alert=signup_success");
-exit;
+try {
+    $stmt->execute([
+        'full_name' => $full_name,
+        'email' => $email,
+        'phone' => $phone,
+        'password' => $hashed_password
+    ]);
+    echo json_encode(["status" => "success", "message" => "Signup successful!"]);
+} catch (Exception $e) {
+    echo json_encode(["status" => "error", "message" => "Something went wrong. Please try again."]);
+}
 ?>

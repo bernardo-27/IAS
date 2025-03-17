@@ -44,6 +44,15 @@ $total_users = $total_users_stmt->fetch(PDO::FETCH_ASSOC)['total_users'];
 
 </div>
     <div class="container mt-5">
+
+        <!-- Alerts -->
+        <div id="deleteSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
+            User deleted successfully!
+        </div>
+        <div id="deleteErrorAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+            Failed to delete user. Please try again.
+        </div>
+
         <h2 class="text-center mb-4">List of Users</h2>
 
         <!-- Table to Display Users -->
@@ -68,7 +77,11 @@ $total_users = $total_users_stmt->fetch(PDO::FETCH_ASSOC)['total_users'];
                     echo '<td>' . htmlspecialchars($row['email']) . '</td>';
                     echo '<td>' . htmlspecialchars($row['phone']) . '</td>';
                     echo '<td>';
-                    echo '<a href="delete_user.php?id=' . $row['id'] . '" class="btn btn-danger btn-sm delete-btn">Delete</a>';
+                    echo '<a href="delete_user.php?id=' . $row['id'] . '" 
+                    class="btn btn-danger btn-sm delete-btn" 
+                    onclick="return confirmDelete(' . $row['id'] . ');">
+                    Delete
+                    </a>';
                     echo '</td>';
                     echo '</tr>';
                 }
@@ -86,5 +99,30 @@ $total_users = $total_users_stmt->fetch(PDO::FETCH_ASSOC)['total_users'];
     </div>
     </div>
 
+
+    <script>
+        $(document).ready(function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const alertType = urlParams.get('alert');
+
+    if (alertType === 'delete_success') {
+        $('#deleteSuccessAlert').text("User deleted successfully.").fadeIn(500).delay(2000).fadeOut(500);
+    } else if (alertType === 'delete_error') {
+        $('#deleteErrorAlert').text("Failed to delete user. Please try again.").fadeIn(500).delay(2000).fadeOut(500);
+    }
+});
+        function confirmDelete(userId) {
+    // Display a confirmation dialog
+    const isConfirmed = confirm("Are you sure you want to delete this user? This action cannot be undone.");
+
+    if (isConfirmed) {
+        // If confirmed, redirect to the delete script
+        window.location.href = `delete_user.php?id=${userId}`;
+    }
+
+    // Prevent the default action if the user cancels
+    return false;
+}
+    </script>
 </body>
 </html>

@@ -155,9 +155,19 @@
 		<div id="signupAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
 			Registration failed! Please try again.
 		</div>
+		<div id="signupAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+			This full name is already in use! Please choose a different name.
+		</div>
+		<div id="signupAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+			Password must contain at least one letter, one number, and be at least 8 characters long.
+		</div>
+		<div id="signupAlert" class="alert alert-danger alert-dismissible fade show" role="alert" style="display:none;">
+			Passwords do not match! Please try again.
+		</div>
 		<div id="signupSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" style="display:none;">
 			Signup successful!
 		</div>
+
 	</div>
 	
 	
@@ -177,6 +187,9 @@
 			}else if (alertType === 'full_name_in_use') {
 				$('#signupAlert').html("This full name is already in use! Please choose a different name.")
 					.fadeIn(500).delay(3000).fadeOut(500);
+			}else if (alertType === 'password_mismatch') {
+				$('#signupAlert').html("Passwords do not match! Please try again.")
+					.fadeIn(500).delay(3000).fadeOut(500);
 			}else if (alertType === 'password_complexity_error') {
 				$('#signupAlert').html("Password must contain at least one letter, one number, and be at least 8 characters long.")
 					.fadeIn(500).delay(3000).fadeOut(500);
@@ -189,114 +202,116 @@
 });
 	
 
-	$(document).ready(function () {
-		$("form").submit(function (event) {
-			event.preventDefault(); // Prevent default form submission
-	
-			let form = $(this);
-			let url = form.attr("action"); // Get the form's action (login.php or signup.php)
-	
-			$.ajax({
-				type: "POST",
-				url: url,
-				data: form.serialize(),
-				dataType: "json",
-				success: function (response) {
-					if (response.status === "success") {
-						// Success handling
-						if (url === "login.php") {
-							$("#loginSuccessAlert").text(response.message).show();
-							setTimeout(function() {
-								window.location.href = "dashboard.php"; // Redirect to dashboard after login
-							}, 1000);
-						} else {
-							$("#signupSuccessAlert").text(response.message).show();
-							setTimeout(function() {
-								location.reload(); // Refresh after successful signup
-							}, 1500);
-						}
-					} else {
-						// Error handling
-						if (url === "login.php") {
-							// Check if it's a blocking message
-							if (response.message.includes("Too many failed attempts")) {
-								// Create a special alert for blocked accounts
-								$("#loginAlert").html('<strong>Account Temporarily Blocked:</strong> ' + response.message)
-									.removeClass('alert-danger')
-									.addClass('alert-warning')
-									.show();
-									
-								// If there's a countdown timer needed
-								if (response.message.includes("Please try again in")) {
-									startBlockCountdown(response.message);
-								}
-							} else {
-								// Regular login error
-								$("#loginAlert").text(response.message)
-									.removeClass('alert-warning')
-									.addClass('alert-danger')
-									.show();
-							}
-						} else {
-							// Signup error
-							$("#signupAlert").text(response.message).show();
-						}
-						
-						// Hide the alert after 5 seconds
-						setTimeout(function() {
-							$(".alert").fadeOut();
-						}, 5000);
-					}
-				},
-				error: function () {
-					alert("Something went wrong. Please try again.");
-				}
-			});
-		});
-		
-		// Close alerts when the user clicks on them
-		$(".alert").click(function() {
-			$(this).hide();
-		});
+$(document).ready(function () {
+    // Handle form submission via AJAX
+    $("form").submit(function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-	
-	// Function to start countdown for blocked accounts
-	function startBlockCountdown(message) {
-		// Extract the remaining minutes from the message
-		const minutesMatch = message.match(/(\d+) minute\(s\)/);
-		if (!minutesMatch) return;
-		
-		let remainingSeconds = parseInt(minutesMatch[1]) * 60;
-		const loginBtn = $('form[action="login.php"] button[type="submit"]');
-		const originalBtnText = loginBtn.text();
-		
-		// Disable the login button
-		loginBtn.prop('disabled', true);
-		
-		// Update the countdown every second
-		const countdownInterval = setInterval(function() {
-			remainingSeconds--;
-			
-			if (remainingSeconds <= 0) {
-				// Re-enable login when countdown completes
-				clearInterval(countdownInterval);
-				loginBtn.prop('disabled', false).text(originalBtnText);
-				$("#loginAlert").fadeOut();
-			} else {
-				// Calculate minutes and seconds for display
-				const minutes = Math.floor(remainingSeconds / 60);
-				const seconds = remainingSeconds % 60;
-				
-				// Update the button text with countdown
-				loginBtn.text(`Try again in ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
-				
-				// Update the alert message
-				$("#loginAlert").html('<strong>Account Temporarily Blocked:</strong> ' + 
-					`Too many failed attempts. Please try again in ${minutes} minute(s) and ${seconds} second(s).`);
-			}
-		}, 1000);
-	}
-	});
+        let form = $(this);
+        let url = form.attr("action"); // Get the form's action (login.php or signup.php)
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            dataType: "json",
+            success: function (response) {
+                if (response.status === "success") {
+                    // Success handling
+                    if (url === "login.php") {
+                        // Login success
+                        $("#loginSuccessAlert").text(response.message).show();
+                        setTimeout(function () {
+                            window.location.href = "dashboard.php"; // Redirect to dashboard after login
+                        }, 1000);
+                    } else if (url === "signup.php") {
+                        // Signup success
+                        $("#signupSuccessAlert").text(response.message).show();
+                        setTimeout(function () {
+                            location.reload(); // Refresh after successful signup
+                        }, 1500);
+                    }
+                } else {
+                    // Error handling
+                    if (url === "login.php") {
+                        // Check if it's a blocking message
+                        if (response.message.includes("Too many failed attempts")) {
+                            // Create a special alert for blocked accounts
+                            $("#loginAlert")
+                                .html('<strong>Account Temporarily Blocked:</strong> ' + response.message)
+                                .removeClass('alert-danger')
+                                .addClass('alert-warning')
+                                .show();
+
+                            // If there's a countdown timer needed
+                            if (response.message.includes("Please try again in")) {
+                                startBlockCountdown(response.message);
+                            }
+                        } else {
+                            // Regular login error
+                            $("#loginAlert")
+                                .text(response.message)
+                                .removeClass('alert-warning')
+                                .addClass('alert-danger')
+                                .show();
+                        }
+                    } else if (url === "signup.php") {
+                        // Signup error
+                        $("#signupAlert").text(response.message).show();
+                    }
+
+                    // Hide the alert after 5 seconds
+                    setTimeout(function () {
+                        $(".alert").fadeOut();
+                    }, 5000);
+                }
+            },
+            error: function () {
+                alert("Something went wrong. Please try again.");
+            }
+        });
+    });
+});
+
+// Function to start countdown for blocked accounts
+function startBlockCountdown(message) {
+    // Extract the remaining minutes from the message
+    const minutesMatch = message.match(/(\d+) minute\(s\)/);
+    if (!minutesMatch) return;
+
+    let remainingSeconds = parseInt(minutesMatch[1]) * 60;
+    const loginBtn = $('form[action="login.php"] button[type="submit"]');
+    const originalBtnText = loginBtn.text();
+
+    // Disable the login button
+    loginBtn.prop('disabled', true);
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(function () {
+        remainingSeconds--;
+
+        if (remainingSeconds <= 0) {
+            // Re-enable login when countdown completes
+            clearInterval(countdownInterval);
+            loginBtn.prop('disabled', false).text(originalBtnText);
+            $("#loginAlert").fadeOut();
+        } else {
+            // Calculate minutes and seconds for display
+            const minutes = Math.floor(remainingSeconds / 60);
+            const seconds = remainingSeconds % 60;
+
+            // Update the button text with countdown
+            loginBtn.text(`Try again in ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+
+            // Update the alert message
+            $("#loginAlert").html(
+                '<strong>Account Temporarily Blocked:</strong> ' +
+                `Too many failed attempts. Please try again in ${minutes} minute(s) and ${seconds} second(s).`
+            );
+        }
+    }, 1000);
+}
+
 
 	
 	function togglePassword(inputId, iconId) {
